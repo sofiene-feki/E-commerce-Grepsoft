@@ -1,5 +1,5 @@
-import { Button, Typography, useMediaQuery } from "@mui/material";
-import { useTheme } from "@mui/system";
+import { Button, Typography, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/system';
 import {
   BannerContainer,
   BannerContent,
@@ -7,21 +7,25 @@ import {
   BannerImage,
   BannerShopButton,
   BannerTitle,
-} from "../../styles/banner";
-
+} from '../../styles/banner';
 
 export default function Banner() {
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down("md"));
- 
+  const matches = useMediaQuery(theme.breakpoints.down('md'));
+
   return (
-    <BannerContainer >
-      <BannerImage src="/images/banner/shopping-cart-istock.png" />
+    <BannerContainer>
+      <BannerImage src="/images/banner/banner.png" />
       <BannerContent>
-        <BannerTitle variant="h2" style={{textAlign:"center"}}>
+        <Typography variant="h6">Huge collection</Typography>
+
+        <BannerTitle variant="h2" style={{ textAlign: 'center' }}>
           New Bags
         </BannerTitle>
-
+        <BannerDescription variant="subtitle">
+          lorem ipsum dolor sit amet, consecteteur adipisicing elitsed dp eiusmo
+          tempor incididunt ut labore magna
+        </BannerDescription>
 
         <BannerShopButton color="primary">Shop Now</BannerShopButton>
       </BannerContent>
