@@ -10,12 +10,12 @@ import {
 import axios from 'axios';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDvcIUg4V_SutJKHyHXfNV9x2AxHwnd82M',
-  authDomain: 'last-e-commerce.firebaseapp.com',
-  projectId: 'last-e-commerce',
-  storageBucket: 'last-e-commerce.appspot.com',
-  messagingSenderId: '250997768667',
-  appId: '1:250997768667:web:9004773dfd708f162367fe',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 const createOrUpdateUser = async (authtoken) => {

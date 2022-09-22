@@ -10,8 +10,8 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
-import { firebase } from '../appbar/service/firebase';
-import { auth } from '../appbar/service/firebase';
+import { firebase } from '../../service/firebase';
+import { auth } from '../../service/firebase';
 import { signInWithPopup, FacebookAuthProvider } from 'firebase/auth';
 
 export default function Login({ open, onClose }) {
