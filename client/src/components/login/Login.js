@@ -11,8 +11,6 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import { firebase } from '../../service/firebase';
-import { auth } from '../../service/firebase';
-import { signInWithPopup, FacebookAuthProvider } from 'firebase/auth';
 
 export default function Login({ open, onClose }) {
   const [joinUs, setJoinUs] = useState(false);
@@ -26,6 +24,14 @@ export default function Login({ open, onClose }) {
 
   const handleJoinUsSubmit = async (event) => {
     event.preventDefault();
+    if (!form.email || !form.password) {
+      console.log('email and password are required ');
+      return;
+    }
+    if (form.password.length < 6) {
+      console.log('password must be more that 6 characters');
+      return;
+    }
     setLoading(true);
     try {
       await firebase.register({ ...form });
@@ -45,17 +51,6 @@ export default function Login({ open, onClose }) {
       console.log(error);
     }
     setLoading(false);
-  };
-
-  const signInWithFacebook = () => {
-    const provider = new FacebookAuthProvider();
-    signInWithPopup(auth, provider)
-      .then((re) => {
-        console.log(re);
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
   };
 
   const handleFormFieldUpdate = (value, field) => {
@@ -173,15 +168,6 @@ export default function Login({ open, onClose }) {
               >
                 {loading ? 'please wait ...' : 'login'}
               </Button>
-              <Box sx={{ mt: 2, textAlign: 'center' }}>
-                <Button
-                  fullWidth
-                  style={{ backgroundColor: 'blue' }}
-                  onClick={signInWithFacebook}
-                >
-                  Login with facebook
-                </Button>
-              </Box>
             </form>
             <Box sx={{ mt: 2, textAlign: 'center' }}>
               <Typography variant="caption">
