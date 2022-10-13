@@ -17,7 +17,6 @@ const firebaseConfig = {
   messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
-
 const createOrUpdateUser = async (authtoken) => {
   return await axios.post(
     'http://localhost:8000/api/create-or-update-user',
@@ -36,17 +35,17 @@ export const auth = getAuth(app);
 
 async function register({ firstname, lastname, email, password }) {
   const resp = await createUserWithEmailAndPassword(auth, email, password);
+
   await updateProfile(resp.user, { displayName: `${firstname} ${lastname}` });
 }
 async function login({ email, password }) {
   const resp = await signInWithEmailAndPassword(auth, email, password);
-  // console.log(resp);
   const { user } = resp;
   const idTokenResult = await user.getIdTokenResult();
   createOrUpdateUser(idTokenResult.token)
     .then((res) => console.log('create or update res', res))
     .catch((err) => console.log(err));
-  //console.log(idTokenResult);
+  console.log(idTokenResult);
 
   return resp.user;
 }
@@ -56,7 +55,7 @@ async function logout() {
 }
 
 export const firebase = {
-  register: register,
   login: login,
+  register: register,
   logout: logout,
 };

@@ -14,9 +14,11 @@ import { Colors } from '../../styles/theme';
 import IncDec from '../ui/incdec';
 import { Link } from 'react-router-dom';
 import useCart from '../../hooks/useCart';
+import { useUser } from '../../context/ui/User';
 
-export default function Cart() {
+export default function Cart({ onLogin }) {
   const { cart, setCart, setShowCart, showCart } = useUIContext();
+  const { user } = useUser();
   const handleRemoveFromCart = (item) => {
     setCart(cart.filter((c) => c.id !== item.id));
   };
@@ -97,9 +99,23 @@ export default function Cart() {
           >
             {cartContent}
           </Paper>
-          <Button sx={{ mt: 4 }} variant="contained">
-            <Link to="chekout"> Proced to payment</Link>
-          </Button>
+          {!user && (
+            <Button sx={{ mt: 4 }} variant="contained" onClick={onLogin}>
+              <Link to="chekout" style={{ color: 'white' }}>
+                {' '}
+                no Proced to payment
+              </Link>
+            </Button>
+          )}
+          {user && (
+            <Button sx={{ mt: 4 }} variant="contained">
+              <Link to="chekout" style={{ color: 'white' }}>
+                {' '}
+                Proced to payment
+              </Link>
+            </Button>
+          )}
+
           <Button onClick={clearCart}>clear</Button>
         </Box>
       ) : (

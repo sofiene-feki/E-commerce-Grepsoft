@@ -10,8 +10,28 @@ import UserProvider from './context/ui/User';
 import { Routes, Route } from 'react-router-dom';
 import RequireAuth from './service/RequireAuth';
 import Test from './components/pages/Test';
+import { useDispatch } from 'react-redux';
+import { auth } from './service/firebase';
 
-function App() {
+const App = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const unsubFormFbStateChange = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const idTokenResult = await user.getIdTokenResult();
+        console.log('user', user);
+        dispatch({
+          type: 'LOGGED_IN_USER',
+          payload: {
+            email: user.email,
+            token: idTokenResult.token,
+          },
+        });
+      }
+    });
+    return () => unsubFormFbStateChange();
+  }, []);
+
   useEffect(() => {
     document.title = 'React Material UI - Home';
   }, []);
@@ -46,6 +66,6 @@ function App() {
       </Container>
     </ThemeProvider>
   );
-}
+};
 
 export default App;
