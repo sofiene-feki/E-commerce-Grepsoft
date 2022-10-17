@@ -109,6 +109,7 @@ export default function Actions({ matches, onLogin }) {
       >
         {!user && <MenuItem onClick={onLogin}>Login</MenuItem>}
         {user && <MenuItem onClick={logout}>Logout</MenuItem>}
+        <MenuItem>settings</MenuItem>
       </Menu>
     </Component>
   );

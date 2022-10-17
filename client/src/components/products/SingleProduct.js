@@ -1,26 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from 'react';
 import {
-  ExtraActionsWrapper,
   Product,
   ProductActionButton,
   ProductActionsWrapper,
   ProductAddToCart,
   ProductFavButton,
   ProductImage,
-  ProductMetaWrapper,
-} from "../../styles/product";
-import { Stack, Tooltip, Typography } from "@mui/material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import FitScreenIcon from "@mui/icons-material/FitScreen";
-import useDialogModal from "../../hooks/useDialogModal";
-import ProductDetail from "../productdetail";
-import ProductMeta from "./ProductMeta";
-import useCart from "../../hooks/useCart";
-
+} from '../../styles/product';
+import { Stack, Tooltip } from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import FitScreenIcon from '@mui/icons-material/FitScreen';
+import useDialogModal from '../../hooks/useDialogModal';
+import ProductDetail from '../productdetail';
+import ProductMeta from './ProductMeta';
+import useCart from '../../hooks/useCart';
 
 export default function SingleProduct({ product, matches }) {
-  const [ProductDetailDialog, showProductDetailDialog, closeProductDialog] =
+  const [ProductDetailDialog, showProductDetailDialog] =
     useDialogModal(ProductDetail);
 
   const [showOptions, setShowOptions] = useState(false);
@@ -31,14 +28,14 @@ export default function SingleProduct({ product, matches }) {
   const handleMouseLeave = () => {
     setShowOptions(false);
   };
-  const { addToCart, addToCartText } = useCart(product)
+  const { addToCart, addToCartText } = useCart(product);
   return (
     <>
       <Product onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
         <ProductImage src={product.image} />
         <ProductMeta product={product} matches={matches} />
         <ProductActionsWrapper>
-          <Stack direction={matches ? "row" : "column"}>
+          <Stack direction={matches ? 'row' : 'column'}>
             <ProductFavButton isfav={0}>
               <FavoriteIcon />
             </ProductFavButton>
@@ -55,7 +52,9 @@ export default function SingleProduct({ product, matches }) {
           </Stack>
         </ProductActionsWrapper>
       </Product>
-      <ProductAddToCart onClick={addToCart} variant="contained">{addToCartText}</ProductAddToCart>
+      <ProductAddToCart onClick={addToCart} variant="contained">
+        {addToCartText}
+      </ProductAddToCart>
       <ProductDetailDialog product={product} />
     </>
   );

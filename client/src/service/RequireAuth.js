@@ -1,13 +1,19 @@
-//import { Navigate, Outlet, useLocation} from "react-router-dom"
-import { useUser } from '../context/ui/User';
-import Test from '../components/pages/Test';
-import Chekout from '../components/pages/Chekout';
+import { useSelector } from 'react-redux';
+import { Outlet } from 'react-router-dom';
+import LoadingToRedirect from './routes/LoadingToRedirect';
+//import Test from '../components/pages/Test';
 
 const RequireAuth = () => {
-  const { user } = useUser();
+  /* const { user } = useUser();
   if (!user) {
     return <Test />;
   }
   return <Chekout />;
+  */
+  const { user } = useSelector((state) => ({ ...state }));
+
+  // let user = { token: true };
+  return user && user.token ? <Outlet /> : <LoadingToRedirect />;
 };
+
 export default RequireAuth;

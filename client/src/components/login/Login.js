@@ -10,9 +10,26 @@ import {
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
-import { firebase } from '../../service/firebase';
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
+import { auth } from '../../service/firebase';
+import { useDispatch } from 'react-redux';
+import { createOrUpdateUser } from '../../functions/auth';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login({ open, onClose }) {
+  const history = useNavigate();
+  const dispatch = useDispatch();
+  const roleBasedRedirect = (res) => {
+    if (res.data.role === 'admin') {
+      history('/admin/dashboard');
+    } else {
+      history('/user/history');
+    }
+  };
   const [joinUs, setJoinUs] = useState(false);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
@@ -34,7 +51,30 @@ export default function Login({ open, onClose }) {
     }
     setLoading(true);
     try {
-      await firebase.register({ ...form });
+      const resp = await createUserWithEmailAndPassword(
+        auth,
+        form.email,
+        form.password
+      );
+      await updateProfile(resp.user, {
+        displayName: `${form.firstname} ${form.lastname}`,
+      });
+      const { user } = resp;
+      const idTokenResult = await user.getIdTokenResult();
+      createOrUpdateUser(idTokenResult.token)
+        .then((res) => {
+          dispatch({
+            type: 'LOGGED_IN_USER',
+            payload: {
+              name: res.data.name,
+              email: res.data.email,
+              token: idTokenResult.token,
+              role: res.data.role,
+              _id: res.data._id,
+            },
+          });
+        })
+        .catch((err) => console.log(err));
       onClose();
     } catch (error) {
       console.log(error);
@@ -45,8 +85,30 @@ export default function Login({ open, onClose }) {
     event.preventDefault();
     setLoading(true);
     try {
-      await firebase.login({ ...form });
+      const resp = await signInWithEmailAndPassword(
+        auth,
+        form.email,
+        form.password
+      );
+      const { user } = resp;
+      const idTokenResult = await user.getIdTokenResult();
+      createOrUpdateUser(idTokenResult.token)
+        .then((res) => {
+          dispatch({
+            type: 'LOGGED_IN_USER',
+            payload: {
+              name: res.data.name,
+              email: res.data.email,
+              token: idTokenResult.token,
+              role: res.data.role,
+              _id: res.data._id,
+            },
+          });
+          roleBasedRedirect(res);
+        })
+        .catch((err) => console.log(err));
       onClose();
+      //history('/');
     } catch (error) {
       console.log(error);
     }

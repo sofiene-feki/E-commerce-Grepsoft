@@ -9,9 +9,20 @@ import { useEffect } from 'react';
 import UserProvider from './context/ui/User';
 import { Routes, Route } from 'react-router-dom';
 import RequireAuth from './service/RequireAuth';
-import Test from './components/pages/Test';
 import { useDispatch } from 'react-redux';
 import { auth } from './service/firebase';
+import { currentUser } from './functions/auth';
+import Appbar from './components/appbar';
+import AppDrawer from './components/drawer';
+import SearchBox from './components/search';
+import Cart from './components/cart';
+import AdminDashboard from './components/pages/AdminDashboard';
+import AdminRoute from './service/routes/AdminRoute';
+import History from './components/pages/History';
+import Password from './components/pages/Password';
+import Wishlist from './components/pages/Wishlist';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -20,22 +31,28 @@ const App = () => {
       if (user) {
         const idTokenResult = await user.getIdTokenResult();
         console.log('user', user);
-        dispatch({
-          type: 'LOGGED_IN_USER',
-          payload: {
-            email: user.email,
-            token: idTokenResult.token,
-          },
-        });
+        currentUser(idTokenResult.token)
+          .then((res) => {
+            dispatch({
+              type: 'LOGGED_IN_USER',
+              payload: {
+                name: res.data.name,
+                email: res.data.email,
+                token: idTokenResult.token,
+                role: res.data.role,
+                _id: res.data._id,
+              },
+            });
+          })
+          .catch((err) => console.log(err));
       }
     });
     return () => unsubFormFbStateChange();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     document.title = 'React Material UI - Home';
   }, []);
-  console.log(process.env.REACT_APP_TEST);
   return (
     <ThemeProvider theme={theme}>
       <Container
@@ -48,17 +65,22 @@ const App = () => {
         <Stack>
           <UIProvider>
             <UserProvider>
+              <Appbar />
+              <AppDrawer />
+              <ToastContainer />
+              <SearchBox />
+              <Cart />
               <Routes>
-                <Route path="/" element={<Home />} />
-                <Route
-                  path="Chekout"
-                  element={
-                    <RequireAuth>
-                      <Chekout />
-                    </RequireAuth>
-                  }
-                />
-                <Route path="test" element={<Test />} />
+                <Route element={<Home />} path="/" />
+                <Route element={<RequireAuth />}>
+                  <Route element={<Chekout />} path="/chekout" exact />
+                  <Route element={<History />} path="/user/history" />
+                  <Route element={<Password />} path="/user/password" />
+                  <Route element={<Wishlist />} path="/user/whishlist" />
+                </Route>
+                <Route element={<AdminRoute />}>
+                  <Route element={<AdminDashboard />} path="/admin/dashboard" />
+                </Route>
               </Routes>
             </UserProvider>
           </UIProvider>
