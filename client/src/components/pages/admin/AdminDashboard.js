@@ -1,14 +1,15 @@
 import React from 'react';
-import UserNav from '../appbar/UserNav';
+import AdminNav from '../../appbar/AdminNav';
 import { Grid } from '@mui/material';
 
-const Whishlist = () => {
+const AdminDashboard = () => {
   return (
     <Grid container spacing={2}>
-      <UserNav />
+      <AdminNav />
       <Grid item xs={2}></Grid>
-      <div>Whishlist</div>
+      <div>Admin Dashboard</div>
     </Grid>
   );
 };
-export default Whishlist;
+
+export default AdminDashboard;

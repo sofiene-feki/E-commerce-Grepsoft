@@ -19,17 +19,18 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Colors } from '../../styles/theme';
 import { useUIContext } from '../../context/ui';
 import { useState } from 'react';
-import { useUser } from '../../context/ui/User';
 import { auth } from '../../service/firebase';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from 'firebase/auth';
+import { Link } from 'react-router-dom';
 
 export default function Actions({ matches, onLogin }) {
   const dispatch = useDispatch();
 
+  const { user } = useSelector((state) => ({ ...state }));
+
   const [anchorEl, setAnchorEl] = useState(null);
   const { cart, setShowCart } = useUIContext();
-  const { user } = useUser();
   const Component = matches
     ? ActionIconsContainerMobile
     : ActionIconsContainerDesktop;
@@ -94,9 +95,7 @@ export default function Actions({ matches, onLogin }) {
           >
             <Box display="flex" flexDirection="column">
               <PersonIcon />
-              {user && (
-                <Typography variant="caption">{user.displayName}</Typography>
-              )}
+              {user && <Typography variant="caption">{user.name}</Typography>}
             </Box>
           </ListItemIcon>
         </ListItemButton>
@@ -109,7 +108,16 @@ export default function Actions({ matches, onLogin }) {
       >
         {!user && <MenuItem onClick={onLogin}>Login</MenuItem>}
         {user && <MenuItem onClick={logout}>Logout</MenuItem>}
-        <MenuItem>settings</MenuItem>
+        {user && user.role === 'admin' && (
+          <MenuItem>
+            <Link to="/admin/dashboard">Dashboard</Link>
+          </MenuItem>
+        )}
+        {user && user.role === 'subscriber' && (
+          <MenuItem>
+            <Link to="/user/history">settings</Link>
+          </MenuItem>
+        )}
       </Menu>
     </Component>
   );

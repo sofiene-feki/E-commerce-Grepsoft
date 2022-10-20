@@ -20,14 +20,27 @@ exports.read = async (req, res) => {
   res.json(category);
 };
 
-exports.update = (req, res) => {};
+exports.update = async (req, res) => {
+  const { name } = req.body;
+  try {
+    const update = await Category.findOneAndUpdate(
+      { slug: req.params.slug },
+      { name, slug: slugify(name) },
+      { new: true }
+    );
+    res.json(update);
+  } catch {
+    console.log(err);
+    res.status(400).send('Category update failed');
+  }
+};
 
 exports.remove = async (req, res) => {
   try {
-    const deleted = await Category.findByIdAndDelete({ slug: req.params.slug });
+    const deleted = await Category.findOneAndDelete({ slug: req.params.slug });
     res.json(deleted);
   } catch (err) {
     console.log(err);
-    res.status(400).send('Create category failed');
+    res.status(400).send('Category delete failed');
   }
 };

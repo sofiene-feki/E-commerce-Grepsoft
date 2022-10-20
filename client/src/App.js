@@ -16,11 +16,15 @@ import Appbar from './components/appbar';
 import AppDrawer from './components/drawer';
 import SearchBox from './components/search';
 import Cart from './components/cart';
-import AdminDashboard from './components/pages/AdminDashboard';
+import AdminDashboard from './components/pages/admin/AdminDashboard';
+import CategoryCreate from './components/pages/admin/category/CategoryCreate';
+import CategoryUpdate from './components/pages/admin/category/CategoryUpdate';
+import SubCreate from './components/pages/admin/sub/SubCreate';
+import SubUpdate from './components/pages/admin/sub/SubUpdate';
 import AdminRoute from './service/routes/AdminRoute';
-import History from './components/pages/History';
-import Password from './components/pages/Password';
-import Wishlist from './components/pages/Wishlist';
+import History from './components/pages/user/History';
+import Password from './components/pages/user/Password';
+import Wishlist from './components/pages/user/Wishlist';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -80,7 +84,14 @@ const App = () => {
                 </Route>
                 <Route element={<AdminRoute />}>
                   <Route element={<AdminDashboard />} path="/admin/dashboard" />
+                  <Route element={<CategoryCreate />} path="/admin/category" />
+                  <Route
+                    element={<CategoryUpdate />}
+                    path="/admin/category/:slug"
+                  />
                 </Route>
+                <Route element={<SubCreate />} path="/admin/sub" />
+                <Route element={<SubUpdate />} path="/admin/sub/:slug" />
               </Routes>
             </UserProvider>
           </UIProvider>

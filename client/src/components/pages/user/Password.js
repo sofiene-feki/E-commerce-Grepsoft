@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import UserNav from '../appbar/UserNav';
+import UserNav from '../../appbar/UserNav';
 import { Grid } from '@mui/material';
-import { auth } from '../../service/firebase';
+import { auth } from '../../../service/firebase';
 import { toast } from 'react-toastify';
 import { TextField, Button } from '@mui/material';
 import { updatePassword } from 'firebase/auth';
@@ -53,7 +53,7 @@ const Password = () => {
         <UserNav />
       </Grid>
       <Grid>
-        <div>{loading ? 'please wait ...' : 'password update'}</div>
+        <div>{loading ? <h4>please wait </h4> : <h4>password update </h4>}</div>
         <div>{passwordUpdateForm()}</div>
       </Grid>
     </Grid>
