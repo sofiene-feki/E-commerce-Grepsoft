@@ -4,15 +4,17 @@ import { getSub, updateSub } from '../../../../functions/sub';
 import { getCategories } from '../../../../functions/Categories';
 import AdminNav from '../../../appbar/AdminNav';
 import {
-  Grid,
   FormControl,
   InputLabel,
   NativeSelect,
   Box,
+  Typography,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import CategoryForm from '../../../forms/CategoryForm';
 import { useParams, useNavigate } from 'react-router-dom';
+import { MainContainer } from '../AdminDashboard';
+import { useUIContext } from '../../../../context/ui';
 
 const SubUpdate = () => {
   const { user } = useSelector((state) => ({ ...state }));
@@ -54,44 +56,33 @@ const SubUpdate = () => {
       });
   };
 
-  return (
-    <Grid container spacing={2}>
-      <Grid item xs={2}>
-        <AdminNav />
-      </Grid>
-      <Grid item xs={10}>
-        <div>
-          {loading ? <h4>please wait </h4> : <h4>Create sub category </h4>}
+  const { open } = useUIContext();
 
-          <Box>
-            <FormControl fullWidth>
-              <InputLabel variant="standard">Category</InputLabel>
-              <NativeSelect
-                name="Category"
-                onChange={(e) => setParent(e.target.value)}
-              >
-                <option> please select </option>
-                {categories.length > 0 &&
-                  categories.map((c) => (
-                    <option
-                      key={c._id}
-                      value={c._id}
-                      selected={c._id === parent}
-                    >
-                      {c.name}
-                    </option>
-                  ))}
-              </NativeSelect>
-            </FormControl>
-          </Box>
-          <CategoryForm
-            handleSubmit={handleSubmit}
-            name={name}
-            setName={setName}
-          />
-        </div>
-      </Grid>
-    </Grid>
+  return (
+    <MainContainer component="main" open={open} sx={{ p: 1 }}>
+      <AdminNav />
+      <Typography variant="h5">
+        {loading ? 'please wait' : 'Update sub category'}
+      </Typography>
+      <Box>
+        <FormControl fullWidth>
+          <InputLabel variant="standard">Category</InputLabel>
+          <NativeSelect
+            name="Category"
+            onChange={(e) => setParent(e.target.value)}
+          >
+            <option> please select </option>
+            {categories.length > 0 &&
+              categories.map((c) => (
+                <option key={c._id} value={c._id} selected={c._id === parent}>
+                  {c.name}
+                </option>
+              ))}
+          </NativeSelect>
+        </FormControl>
+      </Box>
+      <CategoryForm handleSubmit={handleSubmit} name={name} setName={setName} />
+    </MainContainer>
   );
 };
 

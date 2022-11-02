@@ -1,31 +1,34 @@
-import { Box, Button, Container, Grid } from "@mui/material";
-import { products } from "../../data";
-import SingleProduct from "./SingleProduct";
-import { useTheme } from "@mui/material/styles";
-import { useMediaQuery } from "@mui/material";
-import SingleProductDesktop from "./SingleProductDesktop";
+import { Box, Button, Container, Grid } from '@mui/material';
+import { products } from '../../data';
+import SingleProduct from './SingleProduct';
+import { useTheme } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
+import SingleProductDesktop from './SingleProductDesktop';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import { useState } from "react";
-
-
-
-
+import { useState } from 'react';
 
 export default function Products() {
-
- 
   const [data, setData] = useState(products);
-  const filtreResult=(catItem) => {
-   const result = products.filter((curData)=> {
-     return curData.category===catItem
-   });
-   setData(result);
-  }
- 
+  const filtreResult = (catItem) => {
+    const result = products.filter((curData) => {
+      return curData.category === catItem;
+    });
+    setData(result);
+  };
+
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down("md"));
+  const matches = useMediaQuery(theme.breakpoints.down('md'));
   const renderProducts = data.map((product) => (
-    <Grid item key={product.id} xs={2} sm={4} md={4} display="flex" flexDirection={'column'} alignItems="center">
+    <Grid
+      item
+      key={product.id}
+      xs={2}
+      sm={4}
+      md={4}
+      display="flex"
+      flexDirection={'column'}
+      alignItems="center"
+    >
       {matches ? (
         <SingleProduct product={product} matches={matches} />
       ) : (
@@ -33,16 +36,18 @@ export default function Products() {
       )}
     </Grid>
   ));
- 
+
   return (
     <Container>
-       <ButtonGroup variant="contained" aria-label="outlined primary button group">
-       <Button onClick={()=> setData(products)}>all</Button>
-      <Button onClick={()=> filtreResult('fruit')}
-      >first</Button>
-      <Button onClick={()=> filtreResult('legume')}>second</Button>
-    </ButtonGroup>
-      <Grid        
+      <ButtonGroup
+        variant="contained"
+        aria-label="outlined primary button group"
+      >
+        <Button onClick={() => setData(products)}>all</Button>
+        <Button onClick={() => filtreResult('fruit')}>first</Button>
+        <Button onClick={() => filtreResult('legume')}>second</Button>
+      </ButtonGroup>
+      <Grid
         container
         spacing={{ xs: 2, md: 3 }}
         justifyContent="center"

@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
-import {
-  createSub,
-  getSub,
-  removeSub,
-  getSubs,
-} from '../../../../functions/sub';
+import { createSub, removeSub, getSubs } from '../../../../functions/sub';
 import { getCategories } from '../../../../functions/Categories';
 import AdminNav from '../../../appbar/AdminNav';
 import {
-  Grid,
   Button,
   Alert,
   FormControl,
   InputLabel,
   NativeSelect,
-  Box,
+  Typography,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Stack } from '@mui/system';
@@ -24,6 +18,8 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Link } from 'react-router-dom';
 import CategoryForm from '../../../forms/CategoryForm';
 import LocalSearch from '../../../forms/LocalSearch';
+import { MainContainer } from '../AdminDashboard';
+import { useUIContext } from '../../../../context/ui';
 
 const SubCreate = () => {
   const { user } = useSelector((state) => ({ ...state }));
@@ -85,63 +81,56 @@ const SubCreate = () => {
   //step 4
   const searched = (keyword) => (c) => c.name.toLowerCase().includes(keyword);
 
+  const { open } = useUIContext();
+
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={2}>
-        <AdminNav />
-      </Grid>
-      <Grid item xs={10}>
-        <div>
-          {loading ? <h4>please wait </h4> : <h4>Create sub category </h4>}
+    <MainContainer component="main" open={open} sx={{ p: 1 }}>
+      <AdminNav />
+      <Typography variant="h5">
+        {loading ? 'please wait ' : 'Create sub category'}
+      </Typography>
 
-          <Box>
-            <FormControl>
-              <InputLabel variant="standard">Category</InputLabel>
-              <NativeSelect
-                name="Category"
-                onChange={(e) => setCategory(e.target.value)}
-              >
-                <option> please select </option>
-                {categories.length > 0 &&
-                  categories.map((c) => (
-                    <option key={c._id} value={c._id}>
-                      {c.name}
-                    </option>
-                  ))}
-              </NativeSelect>
-            </FormControl>
-          </Box>
-          <CategoryForm
-            handleSubmit={handleSubmit}
-            name={name}
-            setName={setName}
-          />
-          <LocalSearch keyword={keyword} setKeyword={setKeyword} />
-
-          <Stack sx={{ width: '100%' }} spacing={2}>
-            {subs.filter(searched(keyword)).map((s) => (
-              <Alert
-                icon={false}
-                action={
-                  <div>
-                    <Button onClick={() => handleRemove(s.slug)}>
-                      <DeleteOutlinedIcon />
-                    </Button>
-                    <Link to={`/admin/sub/${s.slug}`}>
-                      <span style={{ float: 'left', marginTop: 8 }}>
-                        <EditOutlinedIcon fontSize="small" color="primary" />
-                      </span>
-                    </Link>
-                  </div>
-                }
-              >
-                <div key={s._id}>{s.name} </div>
-              </Alert>
+      <FormControl>
+        <InputLabel variant="standard">Category</InputLabel>
+        <NativeSelect
+          name="category"
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option> please select </option>
+          {categories.length > 0 &&
+            categories.map((c) => (
+              <option key={c._id} value={c._id}>
+                {c.name}
+              </option>
             ))}
-          </Stack>
-        </div>
-      </Grid>
-    </Grid>
+        </NativeSelect>
+      </FormControl>
+
+      <CategoryForm handleSubmit={handleSubmit} name={name} setName={setName} />
+      <LocalSearch keyword={keyword} setKeyword={setKeyword} />
+
+      <Stack sx={{ width: '100%' }} spacing={2}>
+        {subs.filter(searched(keyword)).map((s) => (
+          <Alert
+            icon={false}
+            action={
+              <div>
+                <Button onClick={() => handleRemove(s.slug)}>
+                  <DeleteOutlinedIcon />
+                </Button>
+                <Link to={`/admin/sub/${s.slug}`}>
+                  <span style={{ float: 'left', marginTop: 8 }}>
+                    <EditOutlinedIcon fontSize="small" color="primary" />
+                  </span>
+                </Link>
+              </div>
+            }
+          >
+            <div key={s._id}>{s.name} </div>
+          </Alert>
+        ))}
+      </Stack>
+    </MainContainer>
   );
 };
 

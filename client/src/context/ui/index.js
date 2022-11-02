@@ -5,6 +5,9 @@ export const useUIContext = () => useContext(UIContext);
 
 export const UIProvider = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  //admin nav drawer
+  const [open, setOpen] = useState(false);
+
   const [showSearchBox, setShowSearchBox] = useState(false);
   const cartFromLocalStroge = JSON.parse(localStorage.getItem('cart') || '[]');
   const [cart, setCart] = useState(cartFromLocalStroge);
@@ -23,6 +26,8 @@ export const UIProvider = ({ children }) => {
     setCart,
     showCart,
     setShowCart,
+    open,
+    setOpen,
   };
 
   return <UIContext.Provider value={value}>{children}</UIContext.Provider>;

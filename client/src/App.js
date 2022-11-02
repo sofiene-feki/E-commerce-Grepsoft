@@ -19,6 +19,7 @@ import Cart from './components/cart';
 import AdminDashboard from './components/pages/admin/AdminDashboard';
 import CategoryCreate from './components/pages/admin/category/CategoryCreate';
 import CategoryUpdate from './components/pages/admin/category/CategoryUpdate';
+import ProductCreate from './components/pages/admin/product/ProductCreate';
 import SubCreate from './components/pages/admin/sub/SubCreate';
 import SubUpdate from './components/pages/admin/sub/SubUpdate';
 import AdminRoute from './service/routes/AdminRoute';
@@ -27,6 +28,7 @@ import Password from './components/pages/user/Password';
 import Wishlist from './components/pages/user/Wishlist';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AdminNav from './components/appbar/AdminNav';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -71,6 +73,7 @@ const App = () => {
             <UserProvider>
               <Appbar />
               <AppDrawer />
+              <AdminNav />
               <ToastContainer />
               <SearchBox />
               <Cart />
@@ -92,6 +95,7 @@ const App = () => {
                 </Route>
                 <Route element={<SubCreate />} path="/admin/sub" />
                 <Route element={<SubUpdate />} path="/admin/sub/:slug" />
+                <Route element={<ProductCreate />} path="/admin/product" />
               </Routes>
             </UserProvider>
           </UIProvider>

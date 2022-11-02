@@ -5,8 +5,8 @@ import {
   getCategories,
   removeCategory,
 } from '../../../../functions/Categories';
-import AdminNav from '../../../appbar/AdminNav';
-import { Grid, Button, Alert } from '@mui/material';
+import AdminNav, { DrawerHeader } from '../../../appbar/AdminNav';
+import { Typography, Button, Alert } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Stack } from '@mui/system';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -14,6 +14,8 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Link } from 'react-router-dom';
 import CategoryForm from '../../../forms/CategoryForm';
 import LocalSearch from '../../../forms/LocalSearch';
+import { MainContainer } from '../AdminDashboard';
+import { useUIContext } from '../../../../context/ui';
 
 const CategoryCreate = () => {
   const { user } = useSelector((state) => ({ ...state }));
@@ -61,6 +63,7 @@ const CategoryCreate = () => {
           loadCategories();
         })
         .catch((err) => {
+          console.log(err);
           if (err.response.status === 400) toast.error(err.response.data);
         });
     }
@@ -68,45 +71,39 @@ const CategoryCreate = () => {
 
   //step 4
   const searched = (keyword) => (c) => c.name.toLowerCase().includes(keyword);
+
+  const { open } = useUIContext();
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={2}>
-        <AdminNav />
-      </Grid>
-      <Grid item xs={10}>
-        <div>
-          {loading ? <h4>please wait </h4> : <h4>Create Category </h4>}
-          <CategoryForm
-            handleSubmit={handleSubmit}
-            name={name}
-            setName={setName}
-          />
-          <LocalSearch keyword={keyword} setKeyword={setKeyword} />
-          <Stack sx={{ width: '100%' }} spacing={2}>
-            {/* step 5 */}
-            {categories.filter(searched(keyword)).map((c) => (
-              <Alert
-                icon={false}
-                action={
-                  <div>
-                    <Button onClick={() => handleRemove(c.slug)}>
-                      <DeleteOutlinedIcon />
-                    </Button>
-                    <Link to={`/admin/category/${c.slug}`}>
-                      <span style={{ float: 'left', marginTop: 8 }}>
-                        <EditOutlinedIcon fontSize="small" color="primary" />
-                      </span>
-                    </Link>
-                  </div>
-                }
-              >
-                <div key={c._id}>{c.name} </div>
-              </Alert>
-            ))}
-          </Stack>
-        </div>
-      </Grid>
-    </Grid>
+    <MainContainer component="main" open={open} sx={{ p: 1 }}>
+      <AdminNav />
+      <Typography variant="h5">
+        {loading ? 'please wait' : 'Create Category'}
+      </Typography>
+      <CategoryForm handleSubmit={handleSubmit} name={name} setName={setName} />
+      <LocalSearch keyword={keyword} setKeyword={setKeyword} />
+      <Stack sx={{ width: '100%' }} spacing={2}>
+        {/* step 5 */}
+        {categories.filter(searched(keyword)).map((c) => (
+          <Alert
+            icon={false}
+            action={
+              <div>
+                <Button onClick={() => handleRemove(c.slug)}>
+                  <DeleteOutlinedIcon />
+                </Button>
+                <Link to={`/admin/category/${c.slug}`}>
+                  <span style={{ float: 'left', marginTop: 8 }}>
+                    <EditOutlinedIcon fontSize="small" color="primary" />
+                  </span>
+                </Link>
+              </div>
+            }
+          >
+            <div key={c._id}>{c.name} </div>
+          </Alert>
+        ))}
+      </Stack>
+    </MainContainer>
   );
 };
 

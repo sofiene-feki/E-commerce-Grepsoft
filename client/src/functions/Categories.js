@@ -26,3 +26,6 @@ export const createCategory = async (category, authtoken) =>
       authtoken,
     },
   });
+
+export const getCategorySubs = async (_id) =>
+  await axios.get(`http://localhost:8000/api/category/subs/${_id}`);

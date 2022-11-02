@@ -14,9 +14,11 @@ const CategoryForm = ({ handleSubmit, name, setName }) => (
       autoFocus
       required
     />
-    <Button type="submit" variant="contained">
-      submit
-    </Button>
+    <div>
+      <Button type="submit" variant="contained">
+        submit
+      </Button>
+    </div>
   </form>
 );
 

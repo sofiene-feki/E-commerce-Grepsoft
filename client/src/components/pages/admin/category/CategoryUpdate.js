@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { getCategory, updateCategory } from '../../../../functions/Categories';
-import AdminNav from '../../../appbar/AdminNav';
-import { Grid } from '@mui/material';
+import AdminNav, { DrawerHeader } from '../../../appbar/AdminNav';
+import { Grid, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import CategoryForm from '../../../forms/CategoryForm';
+import { MainContainer } from '../AdminDashboard';
+import { useUIContext } from '../../../../context/ui';
 
 const CategoryUpdate = () => {
   const { user } = useSelector((state) => ({ ...state }));
@@ -38,23 +40,17 @@ const CategoryUpdate = () => {
       });
   };
 
+  const { open } = useUIContext();
+
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={2}>
-        <AdminNav />
-      </Grid>
-      <Grid item xs={10}>
-        <div>
-          {loading ? <h4>please wait </h4> : <h4>Update Category </h4>}
-          <CategoryForm
-            handleSubmit={handleSubmit}
-            name={name}
-            setName={setName}
-          />
-          <hr />
-        </div>
-      </Grid>
-    </Grid>
+    <MainContainer component="main" open={open} sx={{ p: 1 }}>
+      <AdminNav />
+
+      <Typography variant="h5">
+        {loading ? 'please wait' : 'Update Category '}
+      </Typography>
+      <CategoryForm handleSubmit={handleSubmit} name={name} setName={setName} />
+    </MainContainer>
   );
 };
 
