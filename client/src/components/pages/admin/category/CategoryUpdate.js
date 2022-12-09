@@ -6,7 +6,7 @@ import { Grid, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import CategoryForm from '../../../forms/CategoryForm';
-import { MainContainer } from '../AdminDashboard';
+import { MainContainer } from '../product/AllProducts';
 import { useUIContext } from '../../../../context/ui';
 
 const CategoryUpdate = () => {

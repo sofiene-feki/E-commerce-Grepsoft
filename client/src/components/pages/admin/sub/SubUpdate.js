@@ -9,11 +9,14 @@ import {
   NativeSelect,
   Box,
   Typography,
+  FormGroup,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import CategoryForm from '../../../forms/CategoryForm';
 import { useParams, useNavigate } from 'react-router-dom';
-import { MainContainer } from '../AdminDashboard';
+import { MainContainer } from '../product/AllProducts';
 import { useUIContext } from '../../../../context/ui';
 
 const SubUpdate = () => {
@@ -65,21 +68,23 @@ const SubUpdate = () => {
         {loading ? 'please wait' : 'Update sub category'}
       </Typography>
       <Box>
-        <FormControl fullWidth>
+        <FormGroup>
           <InputLabel variant="standard">Category</InputLabel>
-          <NativeSelect
+          <Select
             name="Category"
             onChange={(e) => setParent(e.target.value)}
+            value={parent}
+            size="small"
+            sx={{ mb: 2, width: '40%' }}
           >
-            <option> please select </option>
             {categories.length > 0 &&
               categories.map((c) => (
-                <option key={c._id} value={c._id} selected={c._id === parent}>
+                <MenuItem key={c._id} value={c._id} selected={c._id === parent}>
                   {c.name}
-                </option>
+                </MenuItem>
               ))}
-          </NativeSelect>
-        </FormControl>
+          </Select>
+        </FormGroup>
       </Box>
       <CategoryForm handleSubmit={handleSubmit} name={name} setName={setName} />
     </MainContainer>

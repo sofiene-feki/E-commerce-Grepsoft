@@ -1,16 +1,17 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
 import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
+import { Toolbar, Box, CssBaseline, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Actions from './actions';
 import { useSelector } from 'react-redux';
 import { AppbarContainer } from '../../styles/appbar';
 import { useUIContext } from '../../context/ui';
+import { styled, alpha } from '@mui/material/styles';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
+import AppMenu from './menu';
+import NavSearch from '../forms/Search';
 
 const drawerWidth = 240;
 
@@ -32,6 +33,48 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
+// const Search = styled('div')(({ theme }) => ({
+//   position: 'relative',
+//   borderRadius: '50px',
+//   backgroundColor: alpha(theme.palette.common.white, 0.15),
+//   '&:hover': {
+//     backgroundColor: alpha(theme.palette.common.white, 0.25),
+//   },
+//   marginLeft: 0,
+//   width: '100%',
+//   [theme.breakpoints.up('sm')]: {
+//     marginLeft: theme.spacing(1),
+//     width: 'auto',
+//   },
+// }));
+
+// const SearchIconWrapper = styled('div')(({ theme }) => ({
+//   padding: theme.spacing(0, 2),
+//   height: '100%',
+//   position: 'absolute',
+//   pointerEvents: 'none',
+//   display: 'flex',
+//   alignItems: 'center',
+//   justifyContent: 'center',
+// }));
+
+// const StyledInputBase = styled(InputBase)(({ theme }) => ({
+//   color: 'inherit',
+//   '& .MuiInputBase-input': {
+//     padding: theme.spacing(1, 1, 1, 0),
+//     // vertical padding + font size from searchIcon
+//     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+//     transition: theme.transitions.create('width'),
+//     width: '100%',
+//     [theme.breakpoints.up('sm')]: {
+//       width: '16ch',
+//       '&:focus': {
+//         width: '20ch',
+//       },
+//     },
+//   },
+// }));
+
 export default function AppbarDesktop({
   matches,
   onLoginClick,
@@ -45,8 +88,8 @@ export default function AppbarDesktop({
   };
 
   return (
-    <AppbarContainer>
-      <Box sx={{ display: 'flex' }}>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppbarContainer>
         <CssBaseline />
         <AppBar position="fixed" open={open}>
           <Toolbar>
@@ -57,26 +100,36 @@ export default function AppbarDesktop({
                 onClick={handleDrawerOpen}
                 edge="start"
                 sx={{
-                  marginRight: 5,
                   ...(open && { display: 'none' }),
                 }}
               >
                 <MenuIcon />
               </IconButton>
             )}
-            <Typography variant="h6" noWrap component="div">
-              Mini variant drawer
-            </Typography>
-            <Typography>
-              <Actions
-                matches={matches}
-                onLogin={onLoginClick}
-                onLogout={onLogoutClick}
+            <Typography variant="h6">Logo</Typography>
+            {/* <Search>
+              <SearchIconWrapper>
+                <SearchIcon />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Search…"
+                inputProps={{ 'aria-label': 'search' }}
               />
-            </Typography>
+            </Search> */}
+            <NavSearch />
+            <Box sx={{ flexGrow: 1 }} />
+            <AppMenu />
+
+            <Box sx={{ flexGrow: 1 }} />
+
+            <Actions
+              matches={matches}
+              onLogin={onLoginClick}
+              onLogout={onLogoutClick}
+            />
           </Toolbar>
         </AppBar>
-      </Box>
-    </AppbarContainer>
+      </AppbarContainer>
+    </Box>
   );
 }

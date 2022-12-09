@@ -13,10 +13,10 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import HomeIcon from '@mui/icons-material/Home';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import { useSelector } from 'react-redux';
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -51,7 +51,7 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
+  width: `calc(${theme.spacing(7)} - 100px)`,
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
@@ -67,9 +67,13 @@ export const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function AdminNav() {
-  const { user } = useSelector((state) => ({ ...state }));
-
   const adminMenu = [
+    {
+      id: 0,
+      menuItemText: 'Home',
+      menuItemIcon: HomeIcon,
+      link: '/',
+    },
     {
       id: 1,
       menuItemText: 'Dashboard',
@@ -123,48 +127,46 @@ export default function AdminNav() {
 
   return (
     <Box>
-      {user && user.role === 'admin' && (
-        <Drawer variant="permanent" open={open}>
-          <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'rtl' ? (
-                <ChevronRightIcon />
-              ) : (
-                <ChevronLeftIcon />
-              )}
-            </IconButton>
-          </DrawerHeader>
-          <Divider />
-          <Divider />
+      <Drawer variant="permanent" open={open}>
+        <DrawerHeader>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? (
+              <ChevronRightIcon />
+            ) : (
+              <ChevronLeftIcon />
+            )}
+          </IconButton>
+        </DrawerHeader>
+        <Divider />
+        <Divider />
 
-          <List>
-            {adminMenu.map((a) => (
-              <ListItem disablePadding sx={{ display: 'block' }}>
-                <ListItemButton
+        <List>
+          {adminMenu.map((an, aN) => (
+            <ListItem disablePadding sx={{ display: 'block' }} key={aN}>
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? 'initial' : 'center',
+                  px: 2.5,
+                }}
+              >
+                <an.menuItemIcon
                   sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2.5,
+                    minWidth: 0,
+                    mr: open ? 3 : 'auto',
+                    justifyContent: 'center',
                   }}
-                >
-                  <a.menuItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                  />
+                />
 
-                  <ListItemText sx={{ opacity: open ? 1 : 0 }}>
-                    {' '}
-                    <Link to={a.link}>{a.menuItemText}</Link>
-                  </ListItemText>
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </Drawer>
-      )}
+                <ListItemText sx={{ opacity: open ? 1 : 0 }}>
+                  {' '}
+                  <Link to={an.link}>{an.menuItemText}</Link>
+                </ListItemText>
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
     </Box>
   );
 }

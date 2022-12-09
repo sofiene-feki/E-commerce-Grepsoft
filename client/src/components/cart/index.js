@@ -15,10 +15,13 @@ import IncDec from '../ui/incdec';
 import { Link } from 'react-router-dom';
 import useCart from '../../hooks/useCart';
 import { useUser } from '../../context/ui/User';
+import { useDispatch, useSelector } from 'react-redux';
+import noImage from '../../images/noImage.png';
 
 export default function Cart({ onLogin }) {
-  const { cart, setCart, setShowCart, showCart } = useUIContext();
-  const { user } = useUser();
+  const { setCart, setShowCart, showCart } = useUIContext();
+  const { user, cart, drawer } = useSelector((state) => ({ ...state }));
+  const dispatch = useDispatch();
   const handleRemoveFromCart = (item) => {
     setCart(cart.filter((c) => c.id !== item.id));
   };
@@ -27,14 +30,22 @@ export default function Cart({ onLogin }) {
   const matches = useMediaQuery(theme.breakpoints.down('md'));
 
   const cartContent = cart.map((item) => (
-    <Box key={item.id}>
+    <Box key={item._id}>
       <Box
         display="flex"
         sx={{ pt: 2, pb: 2 }}
         alignItems="start"
         justifyContent={'space-between'}
       >
-        <Avatar src={item.image} sx={{ width: 96, height: 96, mr: 2 }} />
+        {item.images && item.images.length ? (
+          <Avatar
+            src={item.images[0].url}
+            sx={{ width: 96, height: 96, mr: 2 }}
+          />
+        ) : (
+          <Avatar src={noImage} sx={{ width: 96, height: 96, mr: 2 }} />
+        )}
+
         <Box display="flex" flexDirection={'column'}>
           <Typography variant="h6">{item.name}</Typography>
           {!matches && (
@@ -62,8 +73,13 @@ export default function Cart({ onLogin }) {
 
   return (
     <Drawer
-      open={showCart}
-      onClose={() => setShowCart(false)}
+      open={drawer}
+      onClose={() =>
+        dispatch({
+          type: 'SET_VISIBLE',
+          payload: false,
+        })
+      }
       anchor="right"
       PaperProps={{
         sx: {
@@ -101,7 +117,7 @@ export default function Cart({ onLogin }) {
           </Paper>
           {!user && (
             <Button sx={{ mt: 4 }} variant="contained" onClick={onLogin}>
-              <Link to="chekout" style={{ color: 'white' }}>
+              <Link to="/cart" style={{ color: 'white' }}>
                 {' '}
                 no Proced to payment
               </Link>

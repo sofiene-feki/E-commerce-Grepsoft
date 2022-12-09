@@ -1,12 +1,18 @@
 import React from 'react';
 import {
   InputLabel,
-  NativeSelect,
   TextField,
   FormGroup,
   Button,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+  Select,
+  MenuItem,
+  OutlinedInput,
 } from '@mui/material';
-import AntdSubProduct from './AntdSubProduct';
 
 const ProductCreateForm = ({
   handleSubmit,
@@ -32,6 +38,16 @@ const ProductCreateForm = ({
     color,
     brand,
   } = values;
+  // Mui multi select
+  const handleChangeSelect = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setValues(
+      { ...values, subs: value }
+      // On autofill we get a stringified value.
+    );
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -40,9 +56,9 @@ const ProductCreateForm = ({
           label="Title"
           type={'text'}
           name="title"
-          variant="standard"
-          sx={{ mb: 2 }}
-          fullWidth
+          variant="outlined"
+          sx={{ mb: 2, width: '40%' }}
+          size="small"
           value={title}
           onChange={handleChange}
           required
@@ -53,8 +69,8 @@ const ProductCreateForm = ({
           label="Description"
           type={'text'}
           name="description"
-          variant="standard"
-          sx={{ mb: 2 }}
+          variant="outlined"
+          sx={{ mb: 2, width: '40%' }}
           fullWidth
           value={description}
           onChange={handleChange}
@@ -66,122 +82,111 @@ const ProductCreateForm = ({
           label="Price"
           type={'number'}
           name="price"
-          variant="standard"
-          sx={{ mb: 2 }}
-          fullWidth
+          variant="outlined"
+          sx={{ mb: 2, width: '40%' }}
+          size="small"
           value={price}
           onChange={handleChange}
           required
         />
-      </FormGroup>
-      {/* <FormGroup>
-        <TextField
-          label="Category"
-          type={'text'}
-          name="category"
-          variant="standard"
-          sx={{ mb: 2 }}
-          fullWidth
-          value={category}
-          onChange={handleChange}
-        />
-      </FormGroup>
-      <FormGroup>
-        <TextField
-          label="Subs"
-          type={'text'}
-          name="subs"
-          variant="standard"
-          sx={{ mb: 2 }}
-          fullWidth
-          value={subs}
-          onChange={handleChange}
-        />
-      </FormGroup> */}
-      <FormGroup>
-        <InputLabel variant="standard">Shipping</InputLabel>
-        <NativeSelect name="shipping" onChange={handleChange}>
-          <option value="no">No</option>
-          <option value="yes">Yes</option>
-        </NativeSelect>
       </FormGroup>
       <FormGroup>
         <TextField
           label="Quantity"
           type={'number'}
           name="quantity"
-          variant="standard"
-          sx={{ mb: 2 }}
-          fullWidth
+          variant="outlined"
+          sx={{ mb: 2, width: '40%' }}
+          size="small"
           value={quantity}
           onChange={handleChange}
           required
         />
       </FormGroup>
+
+      <FormControl>
+        <FormLabel>Shipping</FormLabel>
+        <RadioGroup
+          row
+          aria-labelledby="demo-row-radio-buttons-group-label"
+          name="shipping"
+          onChange={handleChange}
+        >
+          <FormControlLabel value="yes" control={<Radio />} label="yes" />
+          <FormControlLabel value="no" control={<Radio />} label="no" />
+        </RadioGroup>
+      </FormControl>
       <FormGroup>
         <InputLabel variant="standard">color</InputLabel>
-        <NativeSelect name="color" onChange={handleChange}>
-          <option> please select </option>
+        <Select
+          name="color"
+          onChange={handleChange}
+          size="small"
+          sx={{ mb: 2, width: '40%' }}
+        >
           {colors.map((c) => (
-            <option key={c} value={c}>
+            <MenuItem key={c} value={c}>
               {c}
-            </option>
+            </MenuItem>
           ))}
-        </NativeSelect>
+        </Select>
       </FormGroup>
       <FormGroup>
         <InputLabel variant="standard">Brand</InputLabel>
-        <NativeSelect name="brand" onChange={handleChange}>
-          <option> please select </option>
+        <Select
+          name="brand"
+          onChange={handleChange}
+          size="small"
+          sx={{ mb: 2, width: '40%' }}
+        >
           {brands.map((b) => (
-            <option key={b} value={b}>
+            <MenuItem key={b} value={b}>
               {b}
-            </option>
+            </MenuItem>
           ))}
-        </NativeSelect>
+        </Select>
       </FormGroup>
       <FormGroup>
         <InputLabel variant="standard">Category</InputLabel>
-        <NativeSelect name="category" onChange={handleCategoryChange}>
-          <option> please select </option>
+        <Select
+          name="category"
+          onChange={handleCategoryChange}
+          size="small"
+          sx={{ mb: 2, width: '40%' }}
+        >
           {categories.length > 0 &&
             categories.map((c) => (
-              <option key={c._id} value={c._id}>
+              <MenuItem key={c._id} value={c._id}>
                 {c.name}
-              </option>
-            ))}
-        </NativeSelect>
-      </FormGroup>
-      {/* <FormGroup>
-        <InputLabel variant="standard">sub</InputLabel>
-        <Select
-          sx={{ width: 250 }}
-          multiple={true}
-          onChange={(value) => setValues({ ...values, subs: value })}
-          value={subs}
-          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-        >
-          {subOptions.length &&
-            subOptions.map((s) => (
-              <MenuItem key={s._id} value={s._id}>
-                {s.name}
               </MenuItem>
             ))}
         </Select>
-      </FormGroup> */}
-      {showSub && (
-        <AntdSubProduct
-          values={values}
-          setValues={setValues}
-          subOptions={subOptions}
-          subs={subs}
-        />
+      </FormGroup>
+      {subOptions.length > 0 && (
+        <FormGroup>
+          <InputLabel variant="standard">Sub category</InputLabel>
+
+          <Select
+            multiple
+            value={subs}
+            onChange={handleChangeSelect}
+            input={<OutlinedInput label="Name" />}
+            size="small"
+            sx={{ mb: 2, width: '40%' }}
+          >
+            {subOptions.length &&
+              subOptions.map((s) => (
+                <MenuItem key={s._id} value={s._id}>
+                  {s.name}
+                </MenuItem>
+              ))}
+          </Select>
+        </FormGroup>
       )}
 
-      <Button type="submit" variant="contained">
-        submit
+      <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+        product create
       </Button>
-      {subOptions ? subOptions.length : 'no subOption yet'}
     </form>
   );
 };

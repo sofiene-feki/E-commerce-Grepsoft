@@ -8,10 +8,12 @@ import {
   BannerShopButton,
   BannerTitle,
 } from '../../styles/banner';
+import { useSelector } from 'react-redux';
 
 export default function Banner() {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('md'));
+  const { user } = useSelector((state) => ({ ...state }));
 
   return (
     <BannerContainer>

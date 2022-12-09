@@ -27,10 +27,10 @@ import { Link } from 'react-router-dom';
 export default function Actions({ matches, onLogin }) {
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state) => ({ ...state }));
+  const { user, cart } = useSelector((state) => ({ ...state }));
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const { cart, setShowCart } = useUIContext();
+  const { setShowCart } = useUIContext();
   const Component = matches
     ? ActionIconsContainerMobile
     : ActionIconsContainerDesktop;
@@ -42,6 +42,13 @@ export default function Actions({ matches, onLogin }) {
       payload: null,
     });
   }
+
+  const handelDialog = () => {
+    dispatch({
+      type: 'SET_OPEN',
+      payload: true,
+    });
+  };
 
   return (
     <Component>
@@ -99,7 +106,6 @@ export default function Actions({ matches, onLogin }) {
             </Box>
           </ListItemIcon>
         </ListItemButton>
-        <Divider orientation="vertical" flexItem />
       </MyList>
       <Menu
         anchorEl={anchorEl}

@@ -11,14 +11,13 @@ import { Stack, Tooltip } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import FitScreenIcon from '@mui/icons-material/FitScreen';
-import useDialogModal from '../../hooks/useDialogModal';
 import ProductDetail from '../productdetail';
 import ProductMeta from './ProductMeta';
 import useCart from '../../hooks/useCart';
+import noImage from '../../images/noImage.png';
+import { Link } from 'react-router-dom';
 
 export default function SingleProductDesktop({ product, matches }) {
-  const [ProductDetailDialog, showProductDetailDialog] =
-    useDialogModal(ProductDetail);
   const [showOptions, setShowOptions] = useState(false);
   const { addToCart, addToCartText } = useCart(product);
 
@@ -28,39 +27,47 @@ export default function SingleProductDesktop({ product, matches }) {
   const handleMouseLeave = () => {
     setShowOptions(false);
   };
+
+  const { images, slug } = product;
+
   return (
     <>
       <Product onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-        <ProductImage src={product.image} />
+        <ProductImage
+          src={images && images.length ? images[0].url : noImage}
+          style={{ width: 345, height: 230 }}
+        />
         <ProductFavButton isfav={0}>
           <FavoriteIcon />
         </ProductFavButton>
-        {(showOptions || matches) && (
+        {showOptions && (
           <ProductAddToCart
             show={showOptions}
             variant="contained"
             onClick={addToCart}
           >
-            {addToCartText}
+            add to cart
           </ProductAddToCart>
         )}
-        <ProductActionsWrapper show={showOptions || matches}>
+        <ProductActionsWrapper show={showOptions}>
           <Stack direction={matches ? 'row' : 'column'}>
             <ProductActionButton>
               <Tooltip placement="left" title="share this product">
                 <ShareIcon color="primary" />
               </Tooltip>
             </ProductActionButton>
-            <ProductActionButton onClick={() => showProductDetailDialog()}>
+
+            <ProductActionButton>
               <Tooltip placement="left" title="Full view">
-                <FitScreenIcon color="primary" />
+                <Link to={`/product/${slug}`}>
+                  <FitScreenIcon color="primary" />
+                </Link>
               </Tooltip>
             </ProductActionButton>
           </Stack>
         </ProductActionsWrapper>
       </Product>
-      <ProductMeta product={product} />
-      <ProductDetailDialog product={product} />
+      <ProductMeta product={product} matches={matches} />
     </>
   );
 }

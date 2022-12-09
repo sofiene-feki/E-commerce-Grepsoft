@@ -9,9 +9,10 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import noImage from '../../images/noImage.png';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Link } from 'react-router-dom';
 
-const AdminProduct = ({ product }) => {
-  const { title, description, images } = product;
+const AdminProduct = ({ product, handleRemove }) => {
+  const { title, description, images, slug } = product;
   return (
     <Grid2 xs={12} md={3}>
       <Card raised sx={{ maxHeight: 300, borderRaduis: '2px', m: 1 }}>
@@ -26,15 +27,21 @@ const AdminProduct = ({ product }) => {
             {title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {description}
+            {`${description && description.substring(0, 40)}...`}
           </Typography>
         </CardContent>
-        <CardActions>
-          <Button size="small">
-            <EditOutlinedIcon />
-          </Button>
-          <Button size="small">
-            <DeleteOutlinedIcon />
+        <CardActions
+          style={{ display: 'flex', justifyContent: 'space-between' }}
+        >
+          <Link to={`/admin/product/${slug}`}>
+            <Button startIcon={<EditOutlinedIcon />}>Edit</Button>
+          </Link>
+          <Button
+            size="small"
+            startIcon={<DeleteOutlinedIcon />}
+            onClick={() => handleRemove(slug)}
+          >
+            Delete
           </Button>
         </CardActions>
       </Card>

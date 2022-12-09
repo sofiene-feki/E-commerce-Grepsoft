@@ -16,18 +16,24 @@ import {
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { auth } from '../../service/firebase';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createOrUpdateUser } from '../../functions/auth';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login({ open, onClose }) {
   const history = useNavigate();
+  //const { dialog } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
   const roleBasedRedirect = (res) => {
-    if (res.data.role === 'admin') {
-      history('/admin/dashboard');
+    let intended = history.location.state;
+    if (intended) {
+      history(intended.from);
     } else {
-      history('/user/history');
+      if (res.data.role === 'admin') {
+        history('/admin/dashboard');
+      } else {
+        history('/user/history');
+      }
     }
   };
   const [joinUs, setJoinUs] = useState(false);
@@ -118,7 +124,6 @@ export default function Login({ open, onClose }) {
   const handleFormFieldUpdate = (value, field) => {
     setForm({ ...form, [field]: value });
   };
-
   return (
     <Dialog open={open}>
       <DialogTitle>

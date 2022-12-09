@@ -8,8 +8,10 @@ import {
   Alert,
   FormControl,
   InputLabel,
-  NativeSelect,
   Typography,
+  Select,
+  MenuItem,
+  FormGroup,
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Stack } from '@mui/system';
@@ -18,7 +20,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Link } from 'react-router-dom';
 import CategoryForm from '../../../forms/CategoryForm';
 import LocalSearch from '../../../forms/LocalSearch';
-import { MainContainer } from '../AdminDashboard';
+import { MainContainer } from '../product/AllProducts';
 import { useUIContext } from '../../../../context/ui';
 
 const SubCreate = () => {
@@ -90,21 +92,21 @@ const SubCreate = () => {
         {loading ? 'please wait ' : 'Create sub category'}
       </Typography>
 
-      <FormControl>
-        <InputLabel variant="standard">Category</InputLabel>
-        <NativeSelect
+      <FormGroup sx={{ width: 320 }}>
+        <InputLabel variant="standard">Select category</InputLabel>
+        <Select
           name="category"
           onChange={(e) => setCategory(e.target.value)}
+          size="small"
         >
-          <option> please select </option>
           {categories.length > 0 &&
             categories.map((c) => (
-              <option key={c._id} value={c._id}>
+              <MenuItem key={c._id} value={c._id}>
                 {c.name}
-              </option>
+              </MenuItem>
             ))}
-        </NativeSelect>
-      </FormControl>
+        </Select>
+      </FormGroup>
 
       <CategoryForm handleSubmit={handleSubmit} name={name} setName={setName} />
       <LocalSearch keyword={keyword} setKeyword={setKeyword} />

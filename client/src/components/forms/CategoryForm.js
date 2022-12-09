@@ -4,11 +4,11 @@ import { TextField, Button } from '@mui/material';
 const CategoryForm = ({ handleSubmit, name, setName }) => (
   <form onSubmit={handleSubmit}>
     <TextField
-      label="category name"
+      label="category name "
       type={'text'}
-      variant="standard"
-      sx={{ mb: 2 }}
-      fullWidth
+      variant="outlined"
+      sx={{ my: 2, width: '40%' }}
+      size="small"
       value={name}
       onChange={(event) => setName(event.target.value)}
       autoFocus
@@ -16,7 +16,7 @@ const CategoryForm = ({ handleSubmit, name, setName }) => (
     />
     <div>
       <Button type="submit" variant="contained">
-        submit
+        create category
       </Button>
     </div>
   </form>

@@ -4,7 +4,9 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
-import { Badge } from '@mui/material';
+import { Badge, Button } from '@mui/material';
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+
 import { styled } from '@mui/material/styles';
 
 const FileUpload = ({ values, setValues, setLoading }) => {
@@ -78,9 +80,10 @@ const FileUpload = ({ values, setValues, setLoading }) => {
         setLoading(false);
       });
   };
+
   return (
     <>
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
         {values.images &&
           values.images.map((image) => (
             <Badge
@@ -92,7 +95,7 @@ const FileUpload = ({ values, setValues, setLoading }) => {
               <Avatar
                 sx={{ width: 100, height: 100 }}
                 variant="square"
-                key={image.piblic_id}
+                key={image.public_id}
                 alt="Remy Sharp"
                 src={image.url}
               />
@@ -102,14 +105,21 @@ const FileUpload = ({ values, setValues, setLoading }) => {
 
       <div>
         <label>
-          choose file
-          <input
-            hidden
-            type="file"
-            multiple
-            accept="images/*"
-            onChange={fileUploadAndResize}
-          />
+          <Button
+            variant="contained"
+            component="label"
+            startIcon={<PhotoCamera />}
+            sx={{ my: 2 }}
+          >
+            Upload images
+            <input
+              hidden
+              accept="image/*"
+              multiple
+              type="file"
+              onChange={fileUploadAndResize}
+            />
+          </Button>
         </label>
       </div>
     </>

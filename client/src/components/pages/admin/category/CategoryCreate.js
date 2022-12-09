@@ -14,7 +14,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import { Link } from 'react-router-dom';
 import CategoryForm from '../../../forms/CategoryForm';
 import LocalSearch from '../../../forms/LocalSearch';
-import { MainContainer } from '../AdminDashboard';
+import { MainContainer } from '../product/AllProducts';
 import { useUIContext } from '../../../../context/ui';
 
 const CategoryCreate = () => {

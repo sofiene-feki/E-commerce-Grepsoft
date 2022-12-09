@@ -9,11 +9,7 @@ export const UIProvider = ({ children }) => {
   const [open, setOpen] = useState(false);
 
   const [showSearchBox, setShowSearchBox] = useState(false);
-  const cartFromLocalStroge = JSON.parse(localStorage.getItem('cart') || '[]');
-  const [cart, setCart] = useState(cartFromLocalStroge);
-  useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }, [cart]);
+  const [cart, setCart] = useState([]);
 
   const [showCart, setShowCart] = useState(false);
 

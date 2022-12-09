@@ -1,17 +1,13 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
 import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import { Link } from 'react-router-dom';
 import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
 import MailIcon from '@mui/icons-material/Mail';
 
-export default function UserNav({ open }) {
+export default function UserNav() {
   const userMenu = [
     {
       id: 1,
@@ -34,8 +30,8 @@ export default function UserNav({ open }) {
   ];
   return (
     <List>
-      {userMenu.map((u) => (
-        <ListItem disablePadding sx={{ display: 'block' }}>
+      {userMenu.map((u, uN) => (
+        <ListItem disablePadding sx={{ display: 'block' }} key={uN}>
           <ListItemButton
             sx={{
               minHeight: 48,

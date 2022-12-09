@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { createProduct } from '../../../../functions/product';
-import AdminNav, { DrawerHeader } from '../../../appbar/AdminNav';
+import AdminNav from '../../../appbar/AdminNav';
 import { useSelector } from 'react-redux';
-import { Grid, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import ProductCreateForm from '../../../forms/ProductCreateForm';
 import {
   getCategories,
@@ -11,9 +11,8 @@ import {
 } from '../../../../functions/Categories';
 import FileUpload from '../../../forms/FileUpload';
 import CircularProgress from '@mui/material/CircularProgress';
-import { Box } from '@mui/system';
-import { MainContainer } from '../AdminDashboard';
 import { useUIContext } from '../../../../context/ui';
+import { MainContainer } from './AllProducts';
 
 const intialState = {
   title: '',
@@ -81,8 +80,6 @@ const ProductCreate = () => {
       <Typography variant="h5">
         {loading ? <CircularProgress /> : 'Product create'}
       </Typography>
-
-      <hr />
 
       <FileUpload
         values={values}
